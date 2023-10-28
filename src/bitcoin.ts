@@ -1,21 +1,26 @@
 import axios from "axios";
 import { setTimeout } from "timers/promises";
 import player from "play-sound";
+import {
+  GilfoyleCheckCoinParameters,
+  GilfoyleParameters,
+} from "./bitcoin.interface";
 
 let isDesired: boolean = true;
 let prevCoinPrice: number = 0;
-let coinPriceInUSD: number;
+let coinPriceInUSD: number = 0;
 const playerInstance = player();
 
-const playSound = (filePath: string) => {
-  playerInstance.play(filePath);
+const playSound = (soundFilePath: string) => {
+  playerInstance.play(soundFilePath);
 };
 
-const checkValue = async (
-  treshhold: number,
-  coinId: number,
-  filePath: string,
-) => {
+const checkCoinValue = async ({
+  threshold,
+  coinId,
+  soundFilePath,
+  flags: { fullLogging },
+}: GilfoyleCheckCoinParameters) => {
   const { data: coinResponse } = await axios({
     method: "get",
     url: `https://api.coinlore.net/api/ticker/?id=${coinId}`,
@@ -25,28 +30,28 @@ const checkValue = async (
   const { price_usd: coinPrice } = coinResponse[0];
   coinPriceInUSD = Number(coinPrice);
 
-  if (prevCoinPrice != coinPriceInUSD) {
+  if (prevCoinPrice != coinPriceInUSD || fullLogging) {
     console.log(coinPriceInUSD);
     prevCoinPrice = coinPriceInUSD;
   }
   if (
-    (coinPriceInUSD < treshhold && isDesired != false) ||
-    (coinPriceInUSD >= treshhold && isDesired != true)
+    (coinPriceInUSD < threshold && isDesired != false) ||
+    (coinPriceInUSD >= threshold && isDesired != true)
   ) {
-    playSound(filePath);
+    playSound(soundFilePath);
     isDesired = !isDesired;
   }
 };
 
-export const gilfoyle = async (
-  treshhold: number,
-  coinId: number = 90,
-  sleepTimeInMs: number = 5000,
-  filePath: string = "../you-suffer.mp3",
-) => {
+export const coinChecker = async ({
+  threshold,
+  coinId = 90,
+  soundFilePath,
+  delayInMs = 5000,
+  flags,
+}: GilfoyleParameters) => {
   while (true) {
-    await checkValue(treshhold, coinId, filePath);
-    await setTimeout(sleepTimeInMs);
+    await checkCoinValue({ threshold, coinId, soundFilePath, flags });
+    await setTimeout(delayInMs);
   }
 };
-playSound("you-suffer.mp3");

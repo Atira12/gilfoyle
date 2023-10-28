@@ -5,7 +5,7 @@
   "main": "./index.js",
   "bin": "./index.js",
   "scripts": {
-    "build": "tsc && cp you-suffer.mp3 package.json ./dist"
+    "build": "tsc && cp package.json ./dist"
   },
   "author": "",
   "license": "ISC",
