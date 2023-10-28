@@ -1,13 +1,14 @@
 import axios from "axios";
-import * as sound from "sound-play";
 import { setTimeout } from "timers/promises";
+import player from "play-sound";
 
 let isDesired: boolean = true;
 let prevCoinPrice: number = 0;
 let coinPriceInUSD: number;
+const playerInstance = player();
 
 const playSound = (filePath: string) => {
-  sound.play(filePath);
+  playerInstance.play(filePath);
 };
 
 const checkValue = async (
@@ -41,10 +42,11 @@ export const gilfoyle = async (
   treshhold: number,
   coinId: number = 90,
   sleepTimeInMs: number = 5000,
-  filePath: string = "you-suffer.mp3",
+  filePath: string = "../you-suffer.mp3",
 ) => {
   while (true) {
     await checkValue(treshhold, coinId, filePath);
     await setTimeout(sleepTimeInMs);
   }
 };
+playSound("you-suffer.mp3");

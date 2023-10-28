@@ -2,7 +2,8 @@
   "name": "bitcoin",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./index.js",
+  "bin": "./index.js",
   "scripts": {
     "build": "tsc && cp you-suffer.mp3 package.json ./dist"
   },
@@ -11,12 +12,10 @@
   "dependencies": {
     "async": "^3.2.4",
     "axios": "^1.6.0",
-    "play-sound": "^1.1.6",
-    "sound-play": "^1.1.0"
+    "play-sound": "^1.1.6"
   },
   "devDependencies": {
     "@types/play-sound": "^1.1.1",
-    "@types/sound-play": "^1.1.2",
     "typescript": "^5.2.2"
   }
 }
