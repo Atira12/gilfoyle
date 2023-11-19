@@ -9,15 +9,7 @@ const FULL_LOGGING_PREFIX = "--full-logging";
 const HELP_PREFIX = "--help";
 
 const DEFAULT_SOUND_PATH = path.resolve(__dirname, "../you-suffer.mp3");
-export const setup = (argv: string[]) => {
-  const delayInMsPos: number = argv.indexOf(DELAY_PREFIX);
-  const thresholdPos: number = argv.indexOf(THRESHOLD_PREFIX);
-  const coinIdPos: number = argv.indexOf(COIN_PREFIX);
-  const filePathPos: number = argv.indexOf(FILE_PATH_PREFIX);
-  const helpPos: number = argv.indexOf(HELP_PREFIX);
-
-  if (helpPos > -1) {
-    console.log(`
+const HELP_TEXT = `
       * - required 
 
       Parameters:
@@ -29,7 +21,16 @@ export const setup = (argv: string[]) => {
   
       Flags:
        --full-logging Enable logging of each value for bitcoin (Default is false)
-   `);
+`;
+export const setup = (argv: string[]) => {
+  const delayInMsPos: number = argv.indexOf(DELAY_PREFIX);
+  const thresholdPos: number = argv.indexOf(THRESHOLD_PREFIX);
+  const coinIdPos: number = argv.indexOf(COIN_PREFIX);
+  const filePathPos: number = argv.indexOf(FILE_PATH_PREFIX);
+  const helpPos: number = argv.indexOf(HELP_PREFIX);
+
+  if (helpPos > -1) {
+    console.log(HELP_TEXT);
     return;
   }
   const fullLoggingFlag: boolean = argv.indexOf(FULL_LOGGING_PREFIX) != -1;

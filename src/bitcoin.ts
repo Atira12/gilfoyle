@@ -6,9 +6,12 @@ import {
   GilfoyleParameters,
 } from "./bitcoin.interface";
 
+const DEFAULT_API_PATH = "https://api.coinlore.net/api/ticker";
+
 let isDesired: boolean = true;
 let prevCoinPrice: number = 0;
-let coinPriceInUSD: number = 0;
+let coinPrice: number = 0;
+
 const playerInstance = player();
 
 const playSound = (soundFilePath: string) => {
@@ -21,22 +24,24 @@ const checkCoinValue = async ({
   soundFilePath,
   flags: { fullLogging },
 }: GilfoyleCheckCoinParameters) => {
-  const { data: coinResponse } = await axios({
+  const {
+    data: [coinResponse],
+  } = await axios({
     method: "get",
-    url: `https://api.coinlore.net/api/ticker/?id=${coinId}`,
+    url: `${DEFAULT_API_PATH}/?id=${coinId}`,
     responseType: "json",
   });
 
-  const { price_usd: coinPrice } = coinResponse[0];
-  coinPriceInUSD = Number(coinPrice);
+  const { price_usd: coinPriceString } = coinResponse;
+  coinPrice = Number(coinPriceString);
 
-  if (prevCoinPrice != coinPriceInUSD || fullLogging) {
-    console.log(coinPriceInUSD);
-    prevCoinPrice = coinPriceInUSD;
+  if (prevCoinPrice != coinPrice || fullLogging) {
+    console.log(coinPrice);
+    prevCoinPrice = coinPrice;
   }
   if (
-    (coinPriceInUSD < threshold && isDesired != false) ||
-    (coinPriceInUSD >= threshold && isDesired != true)
+    (coinPrice < threshold && isDesired) ||
+    (coinPrice >= threshold && !isDesired)
   ) {
     playSound(soundFilePath);
     isDesired = !isDesired;
@@ -51,7 +56,8 @@ export const coinChecker = async ({
   flags,
 }: GilfoyleParameters) => {
   while (true) {
-    await checkCoinValue({ threshold, coinId, soundFilePath, flags });
-    await setTimeout(delayInMs);
+    await checkCoinValue({ threshold, coinId, soundFilePath, flags }).then(() =>
+      setTimeout(delayInMs),
+    );
   }
 };
