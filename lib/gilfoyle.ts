@@ -7,6 +7,7 @@ const THRESHOLD_PREFIX: string = "--threshold";
 const FILE_PATH_PREFIX: string = "--file";
 const FULL_LOGGING_PREFIX = "--full-logging";
 const HELP_PREFIX = "--help";
+const DISABLE_LOGGING_PREFIX = "--no-logging";
 
 const DEFAULT_SOUND_PATH = path.resolve(__dirname, "../you-suffer.mp3");
 const HELP_TEXT = `
@@ -34,6 +35,7 @@ export const setup = (argv: string[]) => {
     return;
   }
   const fullLoggingFlag: boolean = argv.indexOf(FULL_LOGGING_PREFIX) != -1;
+  const enableLoggingFlag: boolean = argv.indexOf(DISABLE_LOGGING_PREFIX) == -1;
 
   if (thresholdPos == -1) {
     console.log("Treshold is not specified");
@@ -49,9 +51,9 @@ export const setup = (argv: string[]) => {
 
   coinChecker({
     threshold,
-    soundFilePath: filePath,
+    soundFile: filePath,
     coinId,
     delayInMs,
-    flags: { fullLogging: fullLoggingFlag },
+    flags: { fullLogging: fullLoggingFlag, enableLogging: enableLoggingFlag },
   });
 };

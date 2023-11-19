@@ -1,3 +1,3 @@
 #!/usr/bin/env node
-import { setup } from "./src/gilfoyle";
+import { setup } from "./lib/gilfoyle";
 setup(process.argv);
