@@ -1,11 +1,12 @@
 {
-  "name": "bitcoin",
-  "version": "1.0.0",
+  "name": "gilfoyle",
+  "version": "0.0.1",
   "description": "",
   "main": "./index.js",
   "bin": "./index.js",
   "scripts": {
     "build": "tsc && cp package.json you-suffer.mp3 ./dist ",
+    "test": "echo 'No tests'",
     "build:full": "npm run build && npm pack ./dist"
   },
   "author": "atira12",
