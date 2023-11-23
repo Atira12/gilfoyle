@@ -8,7 +8,7 @@
     "build": "tsc && cp package.json you-suffer.mp3 ./dist ",
     "build:full": "npm run build && npm pack ./dist"
   },
-  "author": "",
+  "author": "atira12",
   "license": "ISC",
   "dependencies": {
     "async": "^3.2.4",
